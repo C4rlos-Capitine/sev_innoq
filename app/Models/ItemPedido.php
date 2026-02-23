@@ -10,14 +10,15 @@ class ItemPedido extends Model
     protected $primaryKey = 'id_item_pedido';
     protected $fillable = [
         'quantidade',
-        'preco_unitario',
-        'id_produto',
+        'valor_unitario',
+        'valor_iva',
+        'id_norma',
         'id_pedido',
     ];
 
     public function produto()
     {
-        return $this->belongsTo(Produto::class, 'id_produto');
+        return $this->belongsTo(Norma::class, 'id_norma');
     }
 
     public function pedido()

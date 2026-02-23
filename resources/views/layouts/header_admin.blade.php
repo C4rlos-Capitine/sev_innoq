@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Vendad de Normas</a>
+            <a class="navbar-brand" href="#">Venda de Normas</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -18,6 +18,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('loja') }}">Loja</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('pedidos.index') }}">Pedidos</a>
+                    </li>
+                    <li>
+                        <button class="btn btn-outline-primary">Produtos adicionados <i class="fas fa-shopping-cart"></i></button>
                     </li>
             </ul>
         </div>
