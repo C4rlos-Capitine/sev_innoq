@@ -20,8 +20,9 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        $pedidos = Pedido::with(['provincia'])->orderBy('created_at', 'desc')->get();
-        return view('pedidos.index', compact('pedidos'));
+        $pedidos = Pedido::with(['referencia'])->orderBy('data_pedido', 'desc')->get();
+        //return response()->json($pedidos);
+        return view('pedido.index', compact('pedidos'));
     }
 
     /**

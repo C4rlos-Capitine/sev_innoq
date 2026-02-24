@@ -44,4 +44,10 @@ class Pedido extends Model
     {
         return $this->hasMany(ItemPedido::class, 'id_pedido');
     }
+
+    public function referencia()
+    {
+        return $this->hasOne(\App\Models\referencia::class, 'id_pedido', 'id_pedido');
+    }
+
 }

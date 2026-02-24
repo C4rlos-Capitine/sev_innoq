@@ -23,7 +23,11 @@
                         <a class="nav-link" href="{{ route('pedidos.index') }}">Pedidos</a>
                     </li>
                     <li>
-                        <button class="btn btn-outline-primary">Produtos adicionados <i class="fas fa-shopping-cart"></i></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="showCartModal()">
+                            Produtos adicionados 
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-badge" class="badge bg-danger" style="display: none; font-size: 0.7em; margin-left: 5px;">0</span>
+                        </button>
                     </li>
             </ul>
         </div>
