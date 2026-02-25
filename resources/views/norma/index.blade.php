@@ -12,13 +12,17 @@
         }
     });
 </script>
-<div class="container-fluid mt-5">
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <h2>Gestão de Normas</h2>
+
+<div class="py-4">
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <h1 class="mb-2">
+                <i class="bi bi-file-text"></i> Gestão de Normas
+            </h1>
+            <p class="text-muted">Gerencie todas as normas institucionais e documentos técnicos</p>
         </div>
-        <div class="col-md-6 text-end">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#normaModal" onclick="resetForm()">
+        <div class="col-lg-4 text-end">
+            <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#normaModal" onclick="resetForm()">
                 <i class="bi bi-plus-circle"></i> Nova Norma
             </button>
         </div>
@@ -26,7 +30,7 @@
 
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Erro!</strong>
+            <strong><i class="bi bi-exclamation-circle"></i> Erro de validação!</strong>
             <ul class="mb-0">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -38,74 +42,83 @@
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
+            <i class="bi bi-check-circle"></i> {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
-    <div class="table-responsive">
-        <table id="example" class="table table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Código</th>
-                    <th>Título</th>
-                    <th>Descrição</th>
-                    <th>Data Criação</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($normas as $norma)
-                    <tr>
-                        <td>
-                            <span class="badge bg-info">{{ $norma->codigo }}</span>
-                        </td>
-                        <td>
-                            <strong>{{ $norma->titulo }}</strong>
-                        </td>
-                        <td>
-                            {{ Str::limit($norma->descricao, 50) }}
-                        </td>
-                        <td>
-                            {{ $norma->created_at->format('d/m/Y H:i') }}
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-secondary" onclick='detalhesNorma(@json($norma))'>
-                                <i class="bi bi-eye"></i> Detalhes
-                            </button>
-
-                            <a href="{{ route('documentos.download', ['nome_tabela' => 'norma', 'chave' => $norma->id_norma]) }}" class="btn btn-sm btn-info" title="Baixar último documento">
-                                <i class="bi bi-download"></i> Baixar
-                            </a>
-
-                            <button class="btn btn-sm btn-warning" onclick='editarNorma(@json($norma))'>
-                                <i class="bi bi-pencil"></i> Editar
-                            </button>
-                            <form action="{{ route('norma.destroy', $norma->id_norma) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')">
-                                    <i class="bi bi-trash"></i> Deletar
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center text-muted">Nenhuma norma registada.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table id="example" class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-0 ps-4">Código</th>
+                            <th class="border-0">Título</th>
+                            <th class="border-0">Descrição</th>
+                            <th class="border-0">Data Criação</th>
+                            <th class="border-0 pe-4">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($normas as $norma)
+                            <tr>
+                                <td class="ps-4">
+                                    <span class="badge bg-primary">{{ $norma->codigo }}</span>
+                                </td>
+                                <td>
+                                    <strong class="text-dark">{{ $norma->titulo }}</strong>
+                                </td>
+                                <td>
+                                    <small class="text-muted">{{ Str::limit($norma->descricao, 60) }}</small>
+                                </td>
+                                <td class="text-muted small">
+                                    {{ $norma->created_at->format('d/m/Y H:i') }}
+                                </td>
+                                <td class="pe-4">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick='detalhesNorma(@json($norma))' title="Ver detalhes">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <a href="{{ route('documentos.download', ['nome_tabela' => 'norma', 'chave' => $norma->id_norma]) }}" class="btn btn-sm btn-outline-info" title="Baixar documento">
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-warning" onclick='editarNorma(@json($norma))' title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <form action="{{ route('norma.destroy', $norma->id_norma) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Deletar" onclick="return confirm('Tem certeza que deseja eliminar esta norma?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <i class="bi bi-inbox" style="font-size: 2rem; opacity: 0.5;"></i>
+                                    <p class="mt-3">Nenhuma norma registada</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal Nova/Editar Norma -->
 <div class="modal fade" id="normaModal" tabindex="-1" aria-labelledby="normaLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="normaLabel">Nova Norma</h5>
+                <h5 class="modal-title text-white" id="normaLabel">
+                    <i class="bi bi-file-earmark-plus"></i> Nova Norma
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="normaForm" method="POST" action="{{ route('norma.store') }}" enctype="multipart/form-data">
@@ -115,72 +128,83 @@
 
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="titulo" class="form-label">Título</label>
+                        <label for="titulo" class="form-label">Título <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="titulo" name="titulo" required>
                         <small class="text-danger" id="tituloError"></small>
                     </div>
 
                     <div class="mb-3">
-                        <label for="codigo" class="form-label">Código</label>
+                        <label for="codigo" class="form-label">Código <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="codigo" name="codigo" required>
                         <small class="text-danger" id="codigoError"></small>
                     </div>
 
                     <div class="mb-3">
-                        <label for="descricao" class="form-label">Descrição</label>
-                        <textarea class="form-control" id="descricao" name="descricao" rows="3" required></textarea>
+                        <label for="descricao" class="form-label">Descrição <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="descricao" name="descricao" rows="4" required style="resize: none;"></textarea>
                         <small class="text-danger" id="descricaoError"></small>
                     </div>
 
                     <div class="mb-3">
                         <label for="documento" class="form-label">Documento (PDF)</label>
                         <input type="file" class="form-control" id="documento" name="documento" accept="application/pdf">
-                        <small class="form-text text-muted">Opcional. Apenas PDF, até 10MB.</small>
+                        <small class="form-text text-muted d-block mt-2"><i class="bi bi-info-circle"></i> Opcional. Apenas PDF, máximo 10MB.</small>
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Guardar
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-        <!-- Detalhes Modal -->
-        <div class="modal fade" id="detalhesModal" tabindex="-1" aria-labelledby="detalhesLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="detalhesLabel">Detalhes da Norma</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal Detalhes Norma -->
+<div class="modal fade" id="detalhesModal" tabindex="-1" aria-labelledby="detalhesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-white" id="detalhesLabel">
+                    <i class="bi bi-file-text"></i> Detalhes da Norma
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <h4 id="detalhesTitulo" class="text-dark mb-2"></h4>
+                        <p><strong>Código:</strong> <span id="detalhesCodigo" class="badge bg-primary"></span></p>
                     </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h5 id="detalhesTitulo"></h5>
-                                <p><strong>Código:</strong> <span id="detalhesCodigo"></span></p>
-                                <p id="detalhesDescricao"></p>
-                            </div>
-                            <div class="col-md-4">
-                                <h6>Preço atual</h6>
-                                <p id="detalhesPreco" class="fs-4 fw-bold">—</p>
-                            </div>
-                        </div>
+                    <div class="col-md-4 text-end">
+                        <h6 class="text-uppercase text-muted small">Preço Atual</h6>
+                        <p id="detalhesPreco" class="fs-4 fw-bold text-primary">—</p>
+                    </div>
+                </div>
 
-                        <hr>
-                        <h6>Histórico de Documentos</h6>
-                        <ul class="list-group" id="detalhesDocumentos">
-                            <li class="list-group-item text-muted">Sem documentos</li>
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <hr>
+
+                <h6 class="text-uppercase text-muted small mb-3">Descrição</h6>
+                <p id="detalhesDescricao" class="text-secondary" style="line-height: 1.6;"></p>
+
+                <hr>
+
+                <h6 class="text-uppercase text-muted small mb-3">Documentos</h6>
+                <div class="list-group" id="detalhesDocumentos">
+                    <div class="list-group-item text-muted text-center py-3">
+                        <i class="bi bi-inbox"></i> Sem documentos
                     </div>
                 </div>
             </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
         </div>
+    </div>
+</div>
 
 <script>
     function resetForm() {

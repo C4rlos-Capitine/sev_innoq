@@ -21,6 +21,11 @@ class ItemPedido extends Model
         return $this->belongsTo(Norma::class, 'id_norma');
     }
 
+    public function norma()
+    {
+        return $this->belongsTo(Norma::class, 'id_norma');
+    }
+
     public function pedido()
     {
         return $this->belongsTo(Pedido::class, 'id_pedido');

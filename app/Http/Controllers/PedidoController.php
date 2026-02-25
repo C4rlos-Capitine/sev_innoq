@@ -12,6 +12,9 @@ use App\Models\Norma;
 use GuzzleHttp\Client;
 use App\Models\referencia;
 use Illuminate\Support\Facades\Log;
+use PDF;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 
 class PedidoController extends Controller
 {
@@ -22,7 +25,8 @@ class PedidoController extends Controller
     {
         $pedidos = Pedido::with(['referencia'])->orderBy('data_pedido', 'desc')->get();
         //return response()->json($pedidos);
-        return view('pedido.index', compact('pedidos'));
+        $provincias = \App\Models\provincia::orderBy('nome_provincia')->get()->keyBy('id_provincia');
+        return view('pedido.index', compact('pedidos', 'provincias'));
     }
 
     /**
@@ -117,14 +121,59 @@ class PedidoController extends Controller
                 'entity' => $referenciaData->entity ?? null,
                 'value' => $total_amout
             ]);
-
+            $dados = [
+                'nome_completo_comprador' => $pedido->nome_completo_comprador,
+                'email_comprador' => $pedido->email_comprador,
+                'telefone_comprador' => $pedido->telefone_comprador,
+                'nuit_comprador' => $pedido->nuit_comprador,
+                'endereco_comprador' => $pedido->endereco_comprador,
+                'num_pedido' => $pedido->num_pedido,
+                'data_pedido' => Carbon::parse($pedido->data_pedido)->format('d/m/Y'),
+                'total_amout' => number_format($total_amout, 2, ',', '.'),
+                'referencia' => $referenciaData->reference ?? 'N/A',
+                'codigo_pedido' => $pedido->codigo_pedido,
+                'entidade' => $referenciaData->entity ?? 'N/A'
+            ];
+            Log::info('Dados para email: '.json_encode($dados));
+            Log::info('Pedido criado com ID: '.$pedido->id_pedido.' e referência: '.($referenciaData->reference ?? 'N/A'));
+            Mail::to($pedido->email_comprador)->send(new SendMail($dados));
             DB::commit();
-            return redirect()->route('loja')->with('success', 'Pedido criado com sucesso');
+            return redirect()
+                ->route('loja')
+                ->with(
+                    'success',
+                    'Pedido criado com sucesso. Link da fatura: <a href="'.route('relatorio.fatura.pdf', ['id' => $pedido->id_pedido]).'" target="_blank">Ver Fatura</a>'
+                );
+
         }catch(\Exception $e){
             DB::rollBack();
             \Log::error('Pedido store error: '.$e->getMessage());
             return back()->withInput()->with('error', 'Erro ao criar pedido');
         }
+    }
+
+    public function consultarPedidoByCodigo(Request $request){
+        $codigo = $request->input('codigo_pedido');
+        try{
+            if(!$codigo){
+            return back()->withInput()->with('error', 'Código do pedido é obrigatório');
+        }
+        $pedido = Pedido::where('num_pedido', $codigo)->with(['referencia'])->first();
+        Log::info('Consultando pedido com código: '.$pedido);
+        if(!$pedido){
+            return back()->withInput()->with('error', 'Pedido não encontrado');
+        }
+        //return response()->json($pedido);
+        return view('pedido.consultar', compact('pedido'));
+        }catch(\Exception $e){
+            \Log::error('Consultar pedido error: '.$e->getMessage());
+            return back()->withInput()->with('error', 'Erro ao consultar pedido');
+        }
+
+    }
+
+    public function showConsultarForm(){
+        return view('pedido.consultar');
     }
 
     /**

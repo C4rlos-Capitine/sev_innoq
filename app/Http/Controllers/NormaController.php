@@ -6,7 +6,7 @@ use App\Models\Norma;
 use App\Models\Documento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Log;
 class NormaController extends Controller
 {
     /**
@@ -19,6 +19,8 @@ class NormaController extends Controller
             'documentos' => function($q) { $q->orderBy('created_at', 'desc'); },
         ])->orderBy('created_at', 'desc')->get();
 
+        Log::info('Normas fetched: '.count($normas));
+
         return view('norma.index', compact('normas'));
     }
 
@@ -27,7 +29,9 @@ class NormaController extends Controller
      */
     public function create()
     {
-        return view('norma.create');
+        $provincias = \App\Models\provincia::orderBy('nome_provincia')->get();
+        return view('norma.create', compact('provincias'));
+       // return view('norma.create');
     }
 
     /**

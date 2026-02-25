@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 class PrecoController extends Controller
 {
@@ -13,6 +16,10 @@ class PrecoController extends Controller
     {
         $precos = \App\Models\Preco::all(); // Fetch all preços from the database
         $normas = \App\Models\Norma::all(); // Fetch all normas for the dropdown
+
+        Log::info('Preços fetched: '.count($precos));
+        Log::info('Normas fetched: '.count($normas));
+        
         return view('preco.index', compact('precos', 'normas')); // Pass the data to the view
     }
 

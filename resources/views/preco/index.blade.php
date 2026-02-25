@@ -5,16 +5,19 @@
 <script defer>
     document.addEventListener("DOMContentLoaded", function() {
         new DataTable('table');
-})
+    })
 </script>
 
-<div class="container-fluid mt-5">
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <h2>Preços</h2>
+<div class="py-4">
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <h1 class="mb-2">
+                <i class="bi bi-tag"></i> Gestão de Preços
+            </h1>
+            <p class="text-muted">Gerencie os preços das normas técnicas</p>
         </div>
-        <div class="col-md-6 text-end">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#precoModal" onclick="resetForm()">
+        <div class="col-lg-4 text-end">
+            <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#precoModal" onclick="resetForm()">
                 <i class="bi bi-plus-circle"></i> Novo Preço
             </button>
         </div>
@@ -22,61 +25,81 @@
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
+            <i class="bi bi-check-circle"></i> {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
-    <div id="example" class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Valor</th>
-                    <th>Norma</th>
-                    <th>Data Início</th>
-                    <th>Data Fim</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($precos as $preco)
-                    <tr>
-                        <td>{{ $preco->id_preco }}</td>
-                        <td>{{ number_format($preco->valor, 2, ',', '.') }}</td>
-                        <td>{{ optional($preco->norma)->titulo ?? '—' }}</td>
-                        <td>{{ optional($preco->data_inicio)->format('d/m/Y') ?? $preco->data_inicio }}</td>
-                        <td>{{ optional($preco->data_fim)->format('d/m/Y') ?? ($preco->data_fim ?? '—') }}</td>
-                        <td>
-                            <button class="btn btn-sm btn-warning" onclick='editarPreco(@json($preco))'>
-                                <i class="bi bi-pencil"></i> Editar
-                            </button>
-
-                            <form action="{{ route('precos.destroy', $preco->id_preco) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja eliminar este preço?')">
-                                    <i class="bi bi-trash"></i> Deletar
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="text-center text-muted">Nenhum preço registado.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-0 ps-4">ID</th>
+                            <th class="border-0">Valor</th>
+                            <th class="border-0">Norma</th>
+                            <th class="border-0">Data Início</th>
+                            <th class="border-0">Data Fim</th>
+                            <th class="border-0 pe-4">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($precos as $preco)
+                            <tr>
+                                <td class="ps-4">
+                                    <span class="badge bg-secondary">{{ $preco->id_preco }}</span>
+                                </td>
+                                <td>
+                                    <strong class="text-success">{{ number_format($preco->valor, 2, ',', '.') }} </strong>
+                                </td>
+                                <td>
+                                    <small>{{ optional($preco->norma)->titulo ?? '—' }}</small>
+                                </td>
+                                <td class="text-muted small">
+                                    {{ optional($preco->data_inicio)->format('d/m/Y') ?? $preco->data_inicio }}
+                                </td>
+                                <td class="text-muted small">
+                                    {{ optional($preco->data_fim)->format('d/m/Y') ?? ($preco->data_fim ?? '—') }}
+                                </td>
+                                <td class="pe-4">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-warning" onclick='editarPreco(@json($preco))' title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <form action="{{ route('precos.destroy', $preco->id_preco) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Deletar" onclick="return confirm('Tem certeza que deseja eliminar este preço?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="bi bi-inbox" style="font-size: 2rem; opacity: 0.5;"></i>
+                                    <p class="mt-3">Nenhum preço registado</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Modal Preço -->
 <div class="modal fade" id="precoModal" tabindex="-1" aria-labelledby="precoLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="precoLabel">Novo Preço</h5>
+                <h5 class="modal-title text-white" id="precoLabel">
+                    <i class="bi bi-tag-fill"></i> Novo Preço
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="precoForm" method="POST" action="{{ route('precos.store') }}">
@@ -86,13 +109,13 @@
 
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="valor" class="form-label">Valor</label>
-                        <input type="number" step="0.01" class="form-control" id="valor" name="valor" required>
+                        <label for="valor" class="form-label">Valor <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" class="form-control" id="valor" name="valor" required placeholder="0.00">
                         <small class="text-danger" id="valorError"></small>
                     </div>
 
                     <div class="mb-3">
-                        <label for="id_norma" class="form-label">Norma</label>
+                        <label for="id_norma" class="form-label">Norma <span class="text-danger">*</span></label>
                         <select id="id_norma" name="id_norma" class="form-select" required>
                             <option value="">-- Selecionar Norma --</option>
                             @foreach($normas as $norma)
@@ -103,7 +126,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="data_inicio" class="form-label">Data Início</label>
+                        <label for="data_inicio" class="form-label">Data Início <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="data_inicio" name="data_inicio" required>
                         <small class="text-danger" id="dataInicioError"></small>
                     </div>
@@ -115,9 +138,11 @@
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Guardar
+                    </button>
                 </div>
             </form>
         </div>

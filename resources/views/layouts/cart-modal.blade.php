@@ -46,6 +46,9 @@
                             <label class="form-label">Provincia</label>
                             <select id="provincia_select" name="id_provincia" class="form-control">
                                 <option value="">-- Selecionar --</option>
+                                @foreach($provincias as $provincia)
+                                    <option value="{{ $provincia->id_provincia }}">{{ $provincia->nome_provincia }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-12">
