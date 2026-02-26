@@ -75,12 +75,14 @@
                            class="btn btn-outline-secondary px-4">
                             <i class="bi bi-arrow-left"></i> Voltar
                         </a>
-
+                        @guest
                         <button class="btn btn-primary px-4"
                             onclick="addToCart({{ $norma->id }}, '{{ addslashes($norma->titulo) }}', 0)">
                             <i class="bi bi-shopping-cart"></i>
                             Adicionar ao Carrinho
                         </button>
+                        @endguest
+
 
                     </div>
 

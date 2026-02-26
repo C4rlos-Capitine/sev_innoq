@@ -33,7 +33,7 @@
                         
                         <!-- Badge Código -->
                         <div class="mb-3">
-                            <span class="badge bg-primary">{{ $norma['codigo'] }}</span>
+                            <span class="badge bg-danger">{{ $norma['codigo'] }}</span>
                         </div>
 
                         <!-- Título -->
@@ -53,7 +53,7 @@
 
                         <!-- Preço -->
                         <div class="mb-4">
-                            <h5 class="text-primary fw-bold mb-0">
+                            <h5 class="text-danger fw-bold mb-0">
                                 {{ number_format($norma['precos'][0]['valor'] ?? 0, 2, ',', '.') }}
                             </h5>
                         </div>
@@ -61,14 +61,16 @@
                         <!-- Botões -->
                         <div class="d-flex gap-2 mt-auto">
                             <a href="/norma/{{ $norma['id_norma'] }}"
-                               class="btn btn-outline-primary btn-sm flex-grow-1">
+                               class="btn btn-outline-danger btn-sm flex-grow-1">
                                 <i class="bi bi-eye"></i> Ver
                             </a>
+                           @guest
                             <button type="button"
-                                class="btn btn-primary btn-sm flex-grow-1"
+                                class="btn btn-danger btn-sm flex-grow-1"
                                 onclick="addToCart({{ $norma['id_norma'] }}, '{{ addslashes($norma['titulo']) }}', {{ $norma['precos'][0]['valor'] ?? 0 }})">
                                 <i class="bi bi-shopping-cart"></i> Adicionar
                             </button>
+                           @endguest
                         </div>
                     </div>
                 </div>

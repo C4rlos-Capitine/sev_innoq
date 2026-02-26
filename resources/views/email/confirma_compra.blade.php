@@ -16,5 +16,7 @@
     <li><strong>Total:</strong> {{ $pedido['total_amout'] }}</li>
     <li><strong>Referência:</strong> {{ $pedido['referencia'] }}</li>
     <li><strong>Entidade:</strong> {{ $pedido['entidade'] }}</li>
+    <li><strong>Senha para ficheiro:</strong> XT7#8vQDZUa79Vc</li>
+    <li><strong>Link do ficheiro:</strong> <a href="https://drive.google.com/file/d/1AHq11BpG0qP4qtcVQd4m9A6y_pbwtWKo/view?usp=drive_link">Aceder</a></li>
 </ul>
 <p>Obrigado!</p>

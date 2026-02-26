@@ -1,9 +1,86 @@
-@extends('layouts.app')
 
-@section('content')
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'SV Normas')</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800&amp;display=swap" rel="stylesheet" />
+
+    <!-- Vendor CSS (Bootstrap & Icon Font) -->
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/ionicons.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/simple-line-icons.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/font-awesome.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/DataTables/datatables.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/DataTables/datatables.min.css')}}" type="text/css">
+    <!-- Plugins CSS (All Plugins Files) -->
+    <link rel="stylesheet" href="/assets/css/plugins/animate.css">
+    <link rel="stylesheet" href="/assets/css/plugins/jquery-ui.min.css">
+
+    <!-- Use the minified version files listed below for better performance and remove the files listed above -->
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor/vendor.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins/plugins.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/style.min.css')}}">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ asset('css/app.css')}}">
+    
+    <style>
+        body {
+            background-image: url('/assets/images/back.png');
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Open Sans', sans-serif;
+            color: #212529;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 0;
+        }
+        
+        .container-fluid {
+            max-width: 100%;
+            padding: 0 2rem;
+        }
+        
+        footer {
+            margin-top: auto;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        #form-login{
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            opacity: 0.95;
+        }
+        #form{
+            opacity: 0.95;
+        }
+    </style>
+</head>
+
 <body>
-       <div class="d-flex flex-column align-items-center">
-    <h1>Login</h1>
+<div id="form" class="d-flex flex-column align-items-center">
     @if($errors->any())
         <div style="color:red">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -15,9 +92,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
-    @endif
+        @endif
  
-        <form id="form-login" method="POST" action="{{ url('login') }}">
+        <div id="row-form">
+
+            <form id="form-login" method="POST" action="{{ url('login') }}">
+                <h1>Área de Autenticação</h1>
+</br>
             @csrf
             <div class="mb-3">
                 <label class="form-label">Email</label>
@@ -34,9 +115,10 @@
                 <button type="submit" class="btn btn-primary">Entrar</button>
             
         </form>
-        <p>Não tem conta? <a href="{{ url('register') }}">Registar</a></p>
+        </div>
+    
     </div>
     </div>
 </body>
 </html>
-@endsection
+

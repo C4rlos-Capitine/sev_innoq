@@ -164,7 +164,7 @@ class PedidoController extends Controller
             return back()->withInput()->with('error', 'Pedido não encontrado');
         }
         //return response()->json($pedido);
-        return view('pedido.consultar', compact('pedido'));
+        return view('pedido.estado_pedido', compact('pedido'));
         }catch(\Exception $e){
             \Log::error('Consultar pedido error: '.$e->getMessage());
             return back()->withInput()->with('error', 'Erro ao consultar pedido');

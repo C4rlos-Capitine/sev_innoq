@@ -14,9 +14,9 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         \App\Models\User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'carlos.capitine@gmail.com',
-            'password' => Hash::make('password'), // Use a secure password in production
+            'name' => 'quidgest',
+            'email' => 'carlos.mutemba@quidgest.co.mz',
+            'password' => Hash::make('12345678'), // Use a secure password in production
         ]);
     }
 }

@@ -1,10 +1,24 @@
 <header class="shadow-sm">
     <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
         <div class="container">
+    <style>
+        .logo{
+            width: 4.2rem;
+            height: 4.2rem;
+            position: relative;
 
+        }
+        .logo a{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: auto;
+        }
+    </style>
             <!-- Logo / Nome -->
-            <a class="navbar-brand fw-semibold text-primary" href="#">
-                Venda de Normas
+            <a class="navbar-brand logo" href="#">
+                <img src="{{asset('assets/images/Q_icon.png')}}" alt="">
             </a>
 
             <!-- Mobile toggle -->
@@ -18,9 +32,7 @@
                 
                 <!-- Links principais -->
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" href="#">Início</a>
-                    </li>
+                   
                     @auth
                     <li class="nav-item">
                         <a class="nav-link fw-medium" href="{{ route('norma.index') }}">Normas</a>

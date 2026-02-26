@@ -71,6 +71,9 @@
             border-radius: 12px;
             box-shadow: var(--shadow-md);
         }
+        .container{
+            margin:0;
+        }
     </style>
 </head>
 <body>
